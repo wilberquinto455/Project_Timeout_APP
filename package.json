@@ -1,0 +1,95 @@
+{
+  "name": "timeout-desktop",
+  "version": "1.0.0",
+  "description": "Aplicación de escritorio para gestión de tickets y cronómetros",
+  "author": {
+    "name": "Timeout Team",
+    "email": "contact@timeout.com"
+  },
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test:system": "node src/test/systemCheck.js",
+    "verify": "npm run test:system && electron .",
+    "build": "node src/build.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps",
+    "create-icon": "node scripts/createIcon.js",
+    "predist": "npm run create-icon"
+  },
+  "build": {
+    "appId": "com.timeout.desktop",
+    "productName": "Timeout Desktop",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable"
+        }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "publish": null,
+    "extraResources": [
+      {
+        "from": "./",
+        "to": "app",
+        "filter": [
+          "index.php",
+          "controller/**/*",
+          "model/**/*",
+          "view/**/*",
+          "assets/**/*"
+        ]
+      },
+      {
+        "from": "php",
+        "to": "php",
+        "filter": ["**/*"]
+      }
+    ],
+    "files": [
+      "**/*"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/sqlite3/**/*",
+      "php/**/*"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "png-to-ico": "^2.1.8",
+    "sharp": "^0.33.5"
+  },
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "archiver-utils": "^5.0.2",
+    "date-fns": "^4.1.0",
+    "electron-log": "^5.2.4",
+    "electron-store": "^10.0.0",
+    "electron-updater": "^6.3.9",
+    "mysql2": "^3.11.5",
+    "php-server-manager": "^1.3.3",
+    "sqlite3": "^5.1.7",
+    "winston": "^3.17.0",
+    "ws": "^8.18.0"
+  }
+}
