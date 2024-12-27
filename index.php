@@ -1,4 +1,8 @@
 <?php
+// Habilitar el reporte de errores para debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Incluir archivos de configuración
 require_once(__DIR__ . '/config.php');
 require_once(__DIR__ . '/config/assets.php');
@@ -7,22 +11,45 @@ require_once(__DIR__ . '/routes.php');
 // Obtener la instancia del router
 $router = Router::getInstance();
 
-// Obtener la URL actual y remover el directorio base
-$requestUri = $_SERVER['REQUEST_URI'];
-$basePath = '/Timeout';
-$url = trim(str_replace($basePath, '', $requestUri), '/');
+// Obtener la URL actual
+$requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+// Determinar el base path según el entorno
+$basePath = is_production() ? '' : '/Timeout';
+
+// Remover el base path y limpiar la URL
+$url = trim(substr($requestUri, strlen($basePath)), '/');
+
+// Debug info
+error_log("Request URI: " . $requestUri);
+error_log("Base Path: " . $basePath);
+error_log("Cleaned URL: " . $url);
 
 // Obtener la ruta correspondiente
 $route = $router->match($url);
 
+// Debug info
+error_log("Route found: " . ($route ? "yes" : "no"));
+
 // Ejecutar la ruta correspondiente
 if ($route) {
     if (is_callable($route)) {
+        error_log("Executing callable route");
         call_user_func($route);
     } else if (is_string($route)) {
-        require_once(__DIR__ . '/view/client-side/' . $route . '.php');
+        $filePath = __DIR__ . '/view/client-side/' . $route . '.php';
+        error_log("Looking for file: " . $filePath);
+        if (file_exists($filePath)) {
+            error_log("File exists, including it");
+            require_once($filePath);
+        } else {
+            error_log("File does not exist, showing 404");
+            http_response_code(404);
+            require_once(__DIR__ . '/view/pages/404.php');
+        }
     }
 } else if ($url === '') {
+    error_log("Empty URL, showing home page");
     // Página principal
     $pageTitle = 'Inicio';
     require_once(__DIR__ . '/view/components/header.php');
@@ -86,7 +113,8 @@ if ($route) {
     </section>
 <?php
 } else {
-    // Página 404
+    error_log("No route found for URL: " . $url);
+    // Si no se encuentra la ruta, mostrar página 404
+    http_response_code(404);
     require_once(__DIR__ . '/view/pages/404.php');
 }
-?>
