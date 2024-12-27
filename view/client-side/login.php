@@ -29,7 +29,7 @@ require_once(__DIR__ . '/../../view/components/header.php');
                         </div>
 
                         <!-- Login Form -->
-                        <form form action="../../controller/LoginUser.php" method="POST" id="login-1">
+                        <form action="<?php echo get_url('controller/LoginUser.php'); ?>" method="POST" id="login-1">
                             <div class="form-group">
                                 <label class="small font-weight-bold">Usuario</label>
                                 <div class="input-group">
