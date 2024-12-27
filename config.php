@@ -1,5 +1,8 @@
 <?php
 
+// Incluir el helper de URLs
+require_once(__DIR__ . '/config/url_helper.php');
+
 // Definir la ruta base del proyecto
 define('BASE_PATH', __DIR__);
 
@@ -17,11 +20,9 @@ function get_base_url() {
     return $protocol . $host . $baseFolder;
 }
 
-// Función para generar URLs
+// Función para obtener URLs
 function get_url($path = '') {
-    $baseUrl = rtrim(get_base_url(), '/');
-    $path = ltrim($path, '/');
-    return $baseUrl . '/' . $path;
+    return asset_url($path);
 }
 
 // Función para incluir archivos desde la ruta base
@@ -57,15 +58,16 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Configuración de zona horaria
-date_default_timezone_set('America/Bogota');
+date_default_timezone_set('America/Lima');
 
 // Manejo de errores en desarrollo
-if ($_SERVER['SERVER_NAME'] === 'localhost') {
+if (!is_production()) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 } else {
     error_reporting(0);
+    ini_set('display_errors', 0);
 }
 
 // Función para sanitizar entrada
