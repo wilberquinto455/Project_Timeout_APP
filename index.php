@@ -7,12 +7,23 @@ require_once(__DIR__ . '/routes.php');
 // Obtener la instancia del router
 $router = Router::getInstance();
 
-// Obtener la URL actual
-$url = trim($_SERVER['REQUEST_URI'], '/');
+// Obtener la URL actual y remover el directorio base
+$requestUri = $_SERVER['REQUEST_URI'];
+$basePath = '/Timeout';
+$url = trim(str_replace($basePath, '', $requestUri), '/');
+
+// Obtener la ruta correspondiente
 $route = $router->match($url);
 
-// Si no hay ruta específica o es la ruta principal, mostramos la interfaz por defecto
-if (!$route || $url === '') {
+// Ejecutar la ruta correspondiente
+if ($route) {
+    if (is_callable($route)) {
+        call_user_func($route);
+    } else if (is_string($route)) {
+        require_once(__DIR__ . '/view/client-side/' . $route . '.php');
+    }
+} else if ($url === '') {
+    // Página principal
     $pageTitle = 'Inicio';
     require_once(__DIR__ . '/view/components/header.php');
 ?>
@@ -75,7 +86,7 @@ if (!$route || $url === '') {
     </section>
 <?php
 } else {
-    // Ejecutar la ruta correspondiente
-    $router->execute($route);
+    // Página 404
+    require_once(__DIR__ . '/view/pages/404.php');
 }
 ?>

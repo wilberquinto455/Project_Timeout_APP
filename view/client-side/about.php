@@ -150,7 +150,7 @@ require_once(__DIR__ . '/../../view/components/header.php');
     }
 
     .progress-bar {
-        background-color: var(--bs-primary);
+        background-color: var(--bs-danger);
         font-weight: 500;
     }
 
