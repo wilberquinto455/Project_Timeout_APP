@@ -1,5 +1,54 @@
+# Dependencies
 /vendor/
-node_modules
-node_modules
-node_modules
-node_modules
+/node_modules/
+
+# IDE and Editor files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Build and cache directories
+/dist/
+/build/
+/cache/
+/tmp/
+
+# Composer files
+composer.phar
+/composer.lock
+
+# Other
+*.bak
+*.swp
+*.swo
+
+# the fuelphp document
+/docs/
+
+# you may install these packages with `oil package`.
+# http://fuelphp.com/docs/packages/oil/package.html
+# /fuel/packages/auth/
+# /fuel/packages/email/
+# /fuel/packages/oil/
+# /fuel/packages/orm/
+# /fuel/packages/parser/
+
+# dynamically generated files
+/fuel/app/logs/*/*/*
+/fuel/app/cache/*/*
+/fuel/app/config/crypt.php
