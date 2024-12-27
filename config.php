@@ -12,14 +12,6 @@ define('DB_NAME', 'bd_sistemas_timeout');
 define('DB_USER', 'root');
 define('DB_PASS', '12345');
 
-// Configuración de la URL base
-function get_base_url() {
-    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
-    $host = $_SERVER['HTTP_HOST'];
-    $baseFolder = dirname($_SERVER['SCRIPT_NAME']);
-    return $protocol . $host . $baseFolder;
-}
-
 // Función para obtener URLs
 function get_url($path = '') {
     return asset_url($path);
