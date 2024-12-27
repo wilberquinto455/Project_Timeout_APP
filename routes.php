@@ -3,8 +3,16 @@
 class Router {
     private static $instance = null;
     private $routes = [];
+    private $basePath;
 
-    private function __construct() {}
+    private function __construct() {
+        // Determinar el base path según el entorno
+        if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'localhost') {
+            $this->basePath = '/Timeout';
+        } else {
+            $this->basePath = '';
+        }
+    }
 
     public static function getInstance() {
         if (self::$instance === null) {
@@ -18,6 +26,14 @@ class Router {
     }
 
     public function match($url) {
+        // Remover el base path de la URL si existe
+        if (!empty($this->basePath) && strpos($url, trim($this->basePath, '/')) === 0) {
+            $url = substr($url, strlen(trim($this->basePath, '/')));
+        }
+        
+        // Limpiar la URL
+        $url = trim($url, '/');
+
         // Si la URL está vacía, es la página principal
         if (empty($url)) {
             return null;
@@ -29,6 +45,10 @@ class Router {
         }
 
         return false;
+    }
+
+    public function getBasePath() {
+        return $this->basePath;
     }
 }
 

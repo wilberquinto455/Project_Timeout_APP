@@ -1,7 +1,19 @@
 RewriteEngine On
+
+# Si estamos en el entorno de desarrollo (localhost)
+RewriteCond %{HTTP_HOST} ^localhost$ [NC]
 RewriteBase /Timeout/
+
+# Si estamos en producción (Heroku)
+RewriteCond %{HTTP_HOST} !^localhost$ [NC]
+RewriteBase /
 
 # Si el archivo o directorio no existe, redirige a index.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Forzar HTTPS en producción
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteCond %{HTTP_HOST} !^localhost$ [NC]
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

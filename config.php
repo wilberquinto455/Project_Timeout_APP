@@ -44,15 +44,20 @@ function get_timeout_user() {
     return new Guest();
 }
 
-// Iniciar la sesión si no está iniciada
+// Configuración de zona horaria
+date_default_timezone_set('America/Lima');
+
+// Configuración de sesión
+ini_set('session.cookie_httponly', 1);
+ini_set('session.use_only_cookies', 1);
+if (is_production()) {
+    ini_set('session.cookie_secure', 1);
+}
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Configuración de zona horaria
-date_default_timezone_set('America/Lima');
-
-// Manejo de errores en desarrollo
+// Configuración de errores
 if (!is_production()) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
