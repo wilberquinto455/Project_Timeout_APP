@@ -14,7 +14,7 @@ class User {
         $this->lastName = $data['Apellido'] ?? null;
         $this->email = $data['Usuario'] ?? null;
         $this->role = $data['ID_Rol'] ?? null;
-        $this->created_at = null;
+        $this->created_at = $data['created_at'] ?? null;
     }
 
     public static function getById($userId) {
@@ -42,15 +42,17 @@ class User {
     }
 
     public function getFirstName() {
-        return $this->firstName;
+        return $this->firstName ?? 'Usuario';
     }
 
     public function getLastName() {
-        return $this->lastName;
+        return $this->lastName ?? '';
     }
 
     public function getFullName() {
-        return $this->firstName . ' ' . $this->lastName;
+        $firstName = $this->getFirstName();
+        $lastName = $this->getLastName();
+        return trim($firstName . ' ' . $lastName);
     }
 
     public function getEmail() {

@@ -4,15 +4,14 @@ require_once(__DIR__ . '/../../config.php');
 require_once(__DIR__ . '/../../config/assets.php');
 require_once(__DIR__ . '/../../view/components/header.php');
 ?>
-
 <section class="d-flex">
     <!-- Sidebar -->
     <?php require_once(__DIR__ . '/../../view/components/sidebar.php'); ?>
-
+    
     <div class="main-content">
         <!-- Mobile Nav -->
         <?php require_once(__DIR__ . '/../../view/components/mobile-nav.php'); ?>
-
+        
         <!-- About Content -->
         <div class="container login-container py-5">
         <div class="row justify-content-center align-items-center h-100">
@@ -34,7 +33,7 @@ require_once(__DIR__ . '/../../view/components/header.php');
                                 <label class="small font-weight-bold">Usuario</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">
+                                        <span class="input-group-text" style="padding-top: 14px;">
                                             <i class="fas fa-user text-danger"></i>
                                         </span>
                                     </div>
@@ -46,7 +45,7 @@ require_once(__DIR__ . '/../../view/components/header.php');
                                 <label class="small font-weight-bold">Contraseña</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">
+                                        <span class="input-group-text" style="padding-top: 14px;">
                                             <i class="fas fa-lock text-danger"></i>
                                         </span>
                                     </div>
@@ -145,17 +144,17 @@ require_once(__DIR__ . '/../../view/components/header.php');
     <!-- Alerta -->
     <?php 
     if (isset($_SESSION['titulo'])) {
-        $titulo = $_SESSION['titulo'];
-        $msj = $_SESSION['msj'];
-        $icono = $_SESSION['icono'];
+        $titulo = htmlspecialchars($_SESSION['titulo'], ENT_QUOTES, 'UTF-8');
+        $msj = htmlspecialchars($_SESSION['msj'], ENT_QUOTES, 'UTF-8');
+        $icono = htmlspecialchars($_SESSION['icono'], ENT_QUOTES, 'UTF-8');
         ?>
         <script>
         Swal.fire({
-            title: '<?php echo $titulo?>',
-            text: '<?php echo $msj?>',
-            icon: '<?php echo $icono?>',
+            title: <?php echo json_encode($titulo); ?>,
+            text: <?php echo json_encode($msj); ?>,
+            icon: <?php echo json_encode($icono); ?>,
             confirmButtonColor: '#e4112f'
-        })
+        });
         </script>
         <?php
         unset($_SESSION['titulo']);

@@ -1,64 +1,69 @@
 <?php
 class Conexion {
-    // Configuración para localhost
-    private $local_host = "localhost";
-    private $local_user = "root";
-    private $local_pass = "12345";
-    private $local_db = "bd_sistemas_timeout";
-    private $local_port = "3306";
-
-    // Configuración para JawsDB
-    private $jaws_host = "a07yd3a6okcidwap.cbetxkdyhwsb.us-east-1.rds.amazonaws.com";
-    private $jaws_user = "v4nive92llr404l7";
-    private $jaws_pass = "dnqaorntbw0i0bi1";
-    private $jaws_db = "yp3fyvs9gzzl2efq";
-    private $jaws_port = "3306";
-
+    private $host;
+    private $user;
+    private $pass;
+    private $db;
+    private $port;
     private $conexion;
-    private $is_production = false; // Cambiar a true para usar JawsDB
 
     public function __construct() {
-        $host = $this->is_production ? $this->jaws_host : $this->local_host;
-        $user = $this->is_production ? $this->jaws_user : $this->local_user;
-        $pass = $this->is_production ? $this->jaws_pass : $this->local_pass;
-        $db = $this->is_production ? $this->jaws_db : $this->local_db;
-        $port = $this->is_production ? $this->jaws_port : $this->local_port;
+        // Cargar configuración según el entorno
+        $this->loadConfig();
 
         try {
+            $dsn = "mysql:host={$this->host};port={$this->port};dbname={$this->db}";
+            
+            // Imprimir información de debug
+            error_log("Intentando conectar a: " . $dsn);
+            error_log("Usuario: " . $this->user);
+            
             $this->conexion = new PDO(
-                "mysql:host=" . $host . 
-                ";port=" . $port . 
-                ";dbname=" . $db,
-                $user, 
-                $pass
+                $dsn,
+                $this->user,
+                $this->pass,
+                array(
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+                )
             );
-            $this->conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->conexion->exec("SET CHARACTER SET utf8");
+            
+            error_log("Conexión exitosa a la base de datos");
             
             // Establecer la zona horaria
             $this->conexion->exec("SET time_zone = '-05:00'");
-            $this->conexion->exec("SET SESSION sql_mode = ''");
+            
         } catch(PDOException $e) {
-            echo "Error: " . $e->getMessage();
-            die();
+            error_log("Error de conexión a la base de datos: " . $e->getMessage());
+            throw new Exception("Error de conexión a la base de datos: " . $e->getMessage());
         }
     }
 
-    // Método original para mantener compatibilidad
+    private function loadConfig() {
+        // Verificar si estamos en Railway
+        if (getenv('RAILWAY_ENVIRONMENT') !== false) {
+            $this->host = getenv('MYSQLHOST');
+            $this->user = getenv('MYSQLUSER');
+            $this->pass = getenv('MYSQLPASSWORD');
+            $this->db = getenv('MYSQLDATABASE');
+            $this->port = getenv('MYSQLPORT');
+        } 
+        // Si no, usar configuración local
+        else {
+            $this->host = 'localhost';
+            $this->user = 'root';
+            $this->pass = '12345';
+            $this->db = 'bd_sistemas_timeout';
+            $this->port = '3306';
+        }
+    }
+
     public function get_conexion() {
+        if (!$this->conexion) {
+            throw new Exception("No hay conexión establecida con la base de datos");
+        }
         return $this->conexion;
-    }
-
-    // Nuevo método con estilo camelCase
-    public function getConexion() {
-        return $this->get_conexion();
-    }
-
-    // Método para cambiar entre entornos
-    public function setProduction($value) {
-        $this->is_production = $value;
-        // Reconectar con la nueva configuración
-        $this->__construct();
     }
 }
 ?>

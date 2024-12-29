@@ -27,29 +27,43 @@ require_once(__DIR__ . '/../../config/assets.php');
                 <li class="nav-item">
                     <a class="nav-link text-white px-0" href="<?php echo get_url('contact'); ?>">Contacto</a>
                 </li>
-                <?php if (!get_timeout_user()->isGuest()): ?>
+                
+                <?php $user = get_timeout_user(); ?>
+                <?php if (!$user->isGuest()): ?>
                     <li class="nav-item">
                         <a class="nav-link text-white px-0" href="<?php echo get_url('dashboard'); ?>">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white px-0" href="<?php echo get_url('documents'); ?>">Documentos</a>
                     </li>
+                    <?php if ($user->isAdmin()): ?>
+                        <li class="nav-item">
+                            <a class="nav-link text-white px-0" href="<?php echo get_url('admin'); ?>">Administración</a>
+                        </li>
+                    <?php endif; ?>
                     <li class="nav-item">
                         <a class="nav-link text-white px-0" href="<?php echo get_url('profile'); ?>">Mi Perfil</a>
                     </li>
                     <li class="nav-item mt-3">
-                        <a class="btn btn-danger text-white" href="<?php echo get_url('auth/logout'); ?>">
+                        <a class="btn btn-danger text-white w-100" href="<?php echo get_url('auth/logout'); ?>">
                             Cerrar Sesión <i class="fas fa-sign-out-alt"></i>
                         </a>
                     </li>
                 <?php else: ?>
                     <li class="nav-item mt-3">
-                        <a class="btn btn-danger text-white" href="<?php echo get_url('login'); ?>">
+                        <a class="btn btn-danger text-white w-100" href="<?php echo get_url('login'); ?>">
                             Iniciar Sesión <i class="fas fa-sign-in-alt"></i>
                         </a>
                     </li>
                 <?php endif; ?>
             </ul>
+        </div>
+        
+        <div class="copyright">
+            <p class="text-white small text-center mb-0">
+                &copy; <?php echo date('Y'); ?> TIMEOUT. <br>
+                Todos los derechos reservados.
+            </p>
         </div>
     </div>
 </aside>

@@ -2,7 +2,6 @@
 $pageTitle = 'Acerca de';
 require_once(__DIR__ . '/../../config.php');
 require_once(__DIR__ . '/../../config/assets.php');
-require_once(__DIR__ . '/../../view/components/header.php');
 ?>
 
 <section class="d-flex">
@@ -49,7 +48,7 @@ require_once(__DIR__ . '/../../view/components/header.php');
                                     </div>
                                     <h3 class="h4 mb-3">Gestión Documental</h3>
                                     <p class="text-muted mb-0">
-                                        Organiza y controla todos tus documentos en un solo lugar
+                                        Organiza y controla tus documentos de manera eficiente
                                     </p>
                                 </div>
                             </div>
@@ -69,96 +68,87 @@ require_once(__DIR__ . '/../../view/components/header.php');
                         </div>
                     </div>
 
-                    <!-- Nuestra Misión -->
+                    <!-- Sección de Misión y Visión -->
                     <div class="row align-items-center mb-5">
                         <div class="col-md-6">
                             <h2 class="mb-4">Nuestra Misión</h2>
                             <p class="text-muted">
                                 En TIMEOUT, nos dedicamos a proporcionar soluciones innovadoras para la gestión del tiempo y documentos, 
-                                ayudando a las empresas a optimizar sus procesos y aumentar su productividad.
+                                permitiendo a las empresas optimizar sus procesos y aumentar su productividad.
                             </p>
-                            <ul class="list-unstyled">
-                                <li class="mb-2">
-                                    <i class="fas fa-check text-primary me-2"></i>
-                                    Optimización de procesos empresariales
-                                </li>
-                                <li class="mb-2">
-                                    <i class="fas fa-check text-primary me-2"></i>
-                                    Control y seguimiento en tiempo real
-                                </li>
-                                <li class="mb-2">
-                                    <i class="fas fa-check text-primary me-2"></i>
-                                    Mejora continua y adaptabilidad
-                                </li>
-                            </ul>
                         </div>
                         <div class="col-md-6">
-                            <div class="p-4 bg-light rounded-3">
-                                <h3 class="h4 mb-3">¿Por qué elegirnos?</h3>
-                                <div class="progress mb-3" style="height: 25px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 95%;" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100">
-                                        Eficiencia 95%
-                                    </div>
+                            <h2 class="mb-4">Nuestra Visión</h2>
+                            <p class="text-muted">
+                                Ser la plataforma líder en gestión de tiempos y documentos, reconocida por su innovación, 
+                                eficiencia y compromiso con el éxito de nuestros clientes.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Valores Corporativos -->
+                    <div class="text-center mb-5">
+                        <h2 class="mb-4">Nuestros Valores</h2>
+                        <div class="row g-4">
+                            <div class="col-md-3">
+                                <div class="value-item">
+                                    <i class="fas fa-heart fa-2x text-primary mb-3"></i>
+                                    <h4>Compromiso</h4>
                                 </div>
-                                <div class="progress mb-3" style="height: 25px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
-                                        Satisfacción 90%
-                                    </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="value-item">
+                                    <i class="fas fa-lightbulb fa-2x text-primary mb-3"></i>
+                                    <h4>Innovación</h4>
                                 </div>
-                                <div class="progress" style="height: 25px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 88%;" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100">
-                                        Innovación 88%
-                                    </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="value-item">
+                                    <i class="fas fa-shield-alt fa-2x text-primary mb-3"></i>
+                                    <h4>Seguridad</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="value-item">
+                                    <i class="fas fa-handshake fa-2x text-primary mb-3"></i>
+                                    <h4>Confianza</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Call to Action -->
-                    <div class="text-center">
-                        <h2 class="mb-4">¿Listo para empezar?</h2>
-                        <p class="text-muted mb-4">
-                            Únete a las empresas que ya están optimizando sus procesos con TIMEOUT
-                        </p>
-                        <a href="#" class="btn btn-primary btn-lg px-5">Comenzar Ahora</a>
-                    </div>
                 </div>
             </div>
         </div>
-
-        <!-- Footer -->
-        <?php require_once(__DIR__ . '/../../view/components/footer.php'); ?>
     </div>
 </section>
 
 <style>
     .separator {
         width: 60px;
-        height: 3px;
-        background-color: var(--bs-primary);
+        height: 4px;
+        background-color: var(--primary);
+        border-radius: 2px;
     }
 
     .feature-icon {
+        width: 80px;
         height: 80px;
+        border-radius: 50%;
+        background-color: rgba(var(--primary-rgb), 0.1);
         display: flex;
         align-items: center;
         justify-content: center;
+        margin: 0 auto;
     }
 
-    .progress {
-        background-color: rgba(0,0,0,0.1);
-    }
-
-    .progress-bar {
-        background-color: var(--bs-danger);
-        font-weight: 500;
-    }
-
-    .card {
+    .value-item {
+        padding: 20px;
+        border-radius: 10px;
+        background-color: rgba(var(--primary-rgb), 0.05);
         transition: transform 0.3s ease;
     }
 
-    .card:hover {
+    .value-item:hover {
         transform: translateY(-5px);
     }
 </style>

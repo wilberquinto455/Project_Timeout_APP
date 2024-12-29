@@ -42,26 +42,31 @@ require_once(__DIR__ . '/../../config/assets.php');
                 <a class="nav-link text-white" href="<?php echo get_url('contact'); ?>">Contacto</a>
             </li>
             
-            <?php if (!get_timeout_user()->isGuest()): ?>
+            <?php $user = get_timeout_user(); ?>
+            <?php if (!$user->isGuest()): ?>
                 <li class="nav-item">
                     <a class="nav-link text-white" href="<?php echo get_url('dashboard'); ?>">Dashboard</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-white" href="<?php echo get_url('documents'); ?>">Documentos</a>
                 </li>
+                <?php if ($user->isAdmin()): ?>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="<?php echo get_url('admin'); ?>">Administración</a>
+                    </li>
+                <?php endif; ?>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="<?php echo get_url('profile'); ?>">Mi Perfil</a>
+                    <a class="nav-link text-white" href="<?php echo get_url('profile'); ?>">Perfil</a>
                 </li>
-                <li class="nav-item mt-3">
-                    <a class="btn btn-danger w-100" href="<?php echo get_url('auth/logout'); ?>">
-                        Cerrar Sesión <i class="fas fa-sign-out-alt"></i>
-                    </a>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="<?php echo get_url('auth/logout'); ?>">Cerrar Sesión</a>
                 </li>
             <?php else: ?>
-                <li class="nav-item mt-3">
-                    <a class="btn btn-danger w-100" href="<?php echo get_url('login'); ?>">
-                        Iniciar Sesión <i class="fas fa-sign-in-alt"></i>
-                    </a>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="<?php echo get_url('login'); ?>">Iniciar Sesión</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="<?php echo get_url('register'); ?>">Registrarse</a>
                 </li>
             <?php endif; ?>
         </ul>
