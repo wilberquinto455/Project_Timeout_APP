@@ -43,11 +43,21 @@ class Conexion {
     private function loadConfig() {
         // Verificar si estamos en Railway
         if (getenv('RAILWAY_ENVIRONMENT') !== false) {
-            $this->host = 'junction.proxy.rlwy.net';
-            $this->port = '17301';
-            $this->user = 'root';
-            $this->pass = 'lliIsSMRDYWeKPUQwhPzqoxIZQnJiZSK';
-            $this->db = 'railway';
+            $mysql_url = getenv('MYSQL_URL');
+            if ($mysql_url) {
+                $url = parse_url($mysql_url);
+                $this->host = $url['host'];
+                $this->user = $url['user'];
+                $this->pass = $url['pass'];
+                $this->db = substr($url['path'], 1);
+                $this->port = isset($url['port']) ? $url['port'] : '3306';
+            } else {
+                $this->host = getenv('MYSQLHOST');
+                $this->user = getenv('MYSQLUSER');
+                $this->pass = getenv('MYSQLPASSWORD');
+                $this->db = getenv('MYSQLDATABASE');
+                $this->port = getenv('MYSQLPORT');
+            }
         } 
         // Si no, usar configuración local
         else {
@@ -64,6 +74,21 @@ class Conexion {
             throw new Exception("No hay conexión establecida con la base de datos");
         }
         return $this->conexion;
+    }
+
+    public function getConnection() {
+        return $this->conexion;
+    }
+
+    // Método para probar la conexión
+    public function testConnection() {
+        try {
+            $query = $this->conexion->query("SELECT COUNT(*) as total FROM usuarios");
+            $result = $query->fetch();
+            return $result['total'];
+        } catch (PDOException $e) {
+            throw new Exception("Error al ejecutar consulta: " . $e->getMessage());
+        }
     }
 }
 ?>
