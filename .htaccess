@@ -1,5 +1,12 @@
 RewriteEngine On
-RewriteBase /Timeout/
+
+# Configurar RewriteBase según el entorno
+RewriteCond %{ENV:RAILWAY_ENVIRONMENT} ^$
+RewriteRule ^(.*)$ - [E=BASE:/Timeout]
+RewriteCond %{ENV:RAILWAY_ENVIRONMENT} !^$
+RewriteRule ^(.*)$ - [E=BASE:/]
+
+RewriteBase %{ENV:BASE}
 
 # Permitir acceso directo a archivos existentes
 RewriteCond %{REQUEST_FILENAME} !-f
