@@ -23,19 +23,27 @@ require_once(__DIR__ . '/config/url_helper.php');
 define('BASE_PATH', __DIR__);
 
 // Configuración de la base de datos según el entorno
-if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] !== 'localhost') {
-    // Configuración para Heroku
-    $url = parse_url(getenv("CLEARDB_DATABASE_URL"));
-    define('DB_HOST', $url["host"]);
-    define('DB_NAME', substr($url["path"], 1));
-    define('DB_USER', $url["user"]);
-    define('DB_PASS', $url["pass"]);
+if (getenv('RAILWAY_ENVIRONMENT') !== false) {
+    // Configuración para Railway
+    $mysql_url = getenv('MYSQL_URL');
+    if ($mysql_url) {
+        $url = parse_url($mysql_url);
+        define('DB_HOST', $url["host"]);
+        define('DB_NAME', substr($url["path"], 1));
+        define('DB_USER', $url["user"]);
+        define('DB_PASS', $url["pass"]);
+    } else {
+        define('DB_HOST', getenv('MYSQLHOST'));
+        define('DB_NAME', getenv('MYSQLDATABASE'));
+        define('DB_USER', getenv('MYSQLUSER'));
+        define('DB_PASS', getenv('MYSQLPASSWORD'));
+    }
 } else {
     // Configuración local
     define('DB_HOST', 'localhost');
-    define('DB_NAME', 'timeout_db');
+    define('DB_NAME', 'bd_sistemas_timeout');
     define('DB_USER', 'root');
-    define('DB_PASS', '');
+    define('DB_PASS', '12345');
 }
 
 // Función para obtener URLs
