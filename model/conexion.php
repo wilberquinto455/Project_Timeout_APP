@@ -43,11 +43,11 @@ class Conexion {
     private function loadConfig() {
         // Verificar si estamos en Railway
         if (getenv('RAILWAY_ENVIRONMENT') !== false) {
-            $this->host = getenv('MYSQLHOST');
-            $this->user = getenv('MYSQLUSER');
-            $this->pass = getenv('MYSQLPASSWORD');
-            $this->db = getenv('MYSQLDATABASE');
-            $this->port = getenv('MYSQLPORT');
+            $this->host = 'junction.proxy.rlwy.net';
+            $this->port = '17301';
+            $this->user = 'root';
+            $this->pass = 'lliIsSMRDYWeKPUQwhPzqoxIZQnJiZSK';
+            $this->db = 'railway';
         } 
         // Si no, usar configuración local
         else {
